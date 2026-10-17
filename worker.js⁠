@@ -1,0 +1,51 @@
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    };
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    try {
+      if (url.pathname === "/api/auth/verify" && request.method === "POST") {
+        const { phone, otp } = await request.json();
+        return Response.json({
+          success: true,
+          token: "cp_jwt_mock_token_12345",
+          user: { phone, name: "Ananya Kapoor", kycStatus: "MIN_KYC" }
+        }, { headers: corsHeaders });
+      }
+
+      if (url.pathname === "/api/wallet/balance" && request.method === "GET") {
+        return Response.json({
+          success: true,
+          balance: 12450.00,
+          vpa: "7300277557@indie"
+        }, { headers: corsHeaders });
+      }
+
+      if (url.pathname === "/api/wallet/add-money" && request.method === "POST") {
+        const { amount } = await request.json();
+        const orderId = `YOUPI-${Math.floor(100000 + Math.random() * 900000)}`;
+        const upiPayload = `upi://pay?pa=7300277557@indie&pn=IndusInd&am=${Number(amount).toFixed(2)}&cu=INR&tr=${orderId}`;
+
+        return Response.json({
+          success: true,
+          orderId,
+          upiPayload,
+          message: "FIFO slot reserved successfully"
+        }, { headers: corsHeaders });
+      }
+
+      return new Response("Endpoint Not Found", { status: 404, headers: corsHeaders });
+
+    } catch (err) {
+      return Response.json({ success: false, error: err.message }, { status: 500, headers: corsHeaders });
+    }
+  }
+};
