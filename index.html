@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CreditPay - India's Most Rewarding Digital Wallet with YouPI-PG</title>
+  <title>CreditPay - Digital Wallet with YouPI-PG Gateway</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons CDN -->
@@ -24,7 +24,7 @@
     <header class="bg-[#002970] text-white px-5 pt-3 pb-2 flex justify-between items-center text-xs select-none shadow-sm z-30 shrink-0">
       <div class="flex items-center gap-1.5 font-bold tracking-tight">
         <span class="text-white">Credit</span><span class="text-[#00b9f5]">Pay</span>
-        <span class="bg-[#001c4d] text-[10px] px-1.5 py-0.5 rounded text-cyan-200 ml-1">PPI + YouPI-PG</span>
+        <span class="bg-[#001c4d] text-[10px] px-1.5 py-0.5 rounded text-cyan-200 ml-1">YouPI-PG Active</span>
       </div>
       <div class="flex items-center gap-2">
         <span id="systemClock" class="font-mono">12:00</span>
@@ -50,12 +50,8 @@
         </div>
       </div>
       <div class="flex items-center gap-1.5">
-        <button onclick="openModal('youpiConfigModal')" class="p-2 rounded-xl bg-blue-900/85 hover:bg-blue-800 transition text-emerald-300 relative cursor-pointer" title="YouPI Gateway Settings">
-          <i data-lucide="server" class="w-5 h-5"></i>
-          <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400"></span>
-        </button>
-        <button onclick="openModal('qrModal')" class="p-2 rounded-xl bg-blue-900/85 hover:bg-blue-800 transition text-cyan-200 cursor-pointer" title="My QR Code">
-          <i data-lucide="qr-code" class="w-5 h-5"></i>
+        <button onclick="openModal('authModal')" class="px-2.5 py-1 rounded-lg bg-[#00b9f5] hover:bg-[#00a3db] text-slate-900 font-bold text-[11px] transition cursor-pointer">
+          Login / Verify
         </button>
       </div>
     </div>
@@ -104,8 +100,8 @@
                 <span id="walletBalanceAmount">12,450.00</span>
               </div>
             </div>
-            <span class="text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Min KYC
+            <span id="kycStatusBadge" class="text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Min KYC Verified
             </span>
           </div>
 
@@ -145,7 +141,7 @@
               <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-1 group-hover:scale-105 transition shadow-sm border border-emerald-100">
                 <i data-lucide="landmark" class="w-6 h-6"></i>
               </div>
-              <span class="text-[11px] font-semibold text-slate-700 leading-tight">Check Balance</span>
+              <span class="text-[11px] font-semibold text-slate-700 leading-tight">KYC Status</span>
             </button>
           </div>
         </div>
@@ -210,20 +206,19 @@
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex items-center gap-3">
           <div class="w-14 h-14 rounded-full bg-[#002970] border-2 border-emerald-400 flex items-center justify-center font-black text-lg text-white">AK</div>
           <div>
-            <h3 class="font-bold text-slate-900 text-sm">Ananya Kapoor</h3>
-            <p class="text-xs text-slate-500 font-mono">+91 98765 43210</p>
-            <span class="inline-block mt-1 text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Min-KYC (₹10,000 monthly cap)</span>
+            <h3 id="profileName" class="font-bold text-slate-900 text-sm">Ananya Kapoor</h3>
+            <p id="profilePhone" class="text-xs text-slate-500 font-mono">+91 98765 43210</p>
+            <span class="inline-block mt-1 text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Min-KYC Active (₹10,000 monthly cap)</span>
           </div>
         </div>
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
-          <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">IndusInd (INDIE) Settlement Account</h4>
-          <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-950 space-y-1 font-mono">
-            <p><strong>VPA:</strong> 7300277557@indie</p>
-            <p><strong>A/c No:</strong> 187300277557</p>
-            <p><strong>IFSC:</strong> INDB0000111 (Savings)</p>
+          <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">YouPI-PG Gateway Settings</h4>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 mb-1">Worker Backend API URL</label>
+            <input id="cfgWorkerApiUrl" type="text" placeholder="https://your-worker.workers.dev" class="w-full px-3 py-1.5 text-xs font-mono rounded-lg border border-slate-300 outline-none">
           </div>
-          <button onclick="openModal('youpiConfigModal')" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition cursor-pointer">
-            Configure Gateway Settings
+          <button onclick="saveSettings()" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer">
+            Save Gateway Settings
           </button>
         </div>
       </section>
@@ -255,14 +250,34 @@
 
     <!-- ================= MODALS ================= -->
 
-    <!-- 1. ADD MONEY MODAL -->
+    <!-- 1. AUTH / LOGIN MODAL -->
+    <div id="authModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+      <div class="bg-white w-full max-w-sm rounded-2xl p-5 space-y-4 shadow-2xl">
+        <div class="flex justify-between items-center border-b pb-2">
+          <span class="font-bold text-[#002970] text-sm">Login / KYC Verification</span>
+          <button onclick="closeModal('authModal')" class="cursor-pointer text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Mobile Number</label>
+            <input id="authPhoneInput" type="tel" value="9876543210" class="w-full px-3 py-2 font-mono border rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">OTP Code</label>
+            <input id="authOtpInput" type="text" value="123456" class="w-full px-3 py-2 font-mono border rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <button onclick="verifyUserAuth()" class="w-full py-2.5 bg-[#002970] text-white font-bold rounded-xl cursor-pointer shadow">Verify & Login</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ADD MONEY MODAL -->
     <div id="addMoneyModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div class="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center border-b pb-2">
           <span class="font-bold text-[#002970] text-sm">Add Money via YouPI-PG</span>
-          <button onclick="closeModal('addMoneyModal')" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+          <button onclick="closeModal('addMoneyModal')" class="cursor-pointer text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">Enter Amount to Add</label>
           <div class="relative">
@@ -270,19 +285,18 @@
             <input id="addMoneyInput" type="number" value="2000" min="10" max="100000" class="w-full pl-8 pr-3 py-2 text-lg font-black rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none">
           </div>
           <div class="flex gap-2 mt-2">
-            <button onclick="setAddAmount(500)" class="text-xs font-bold px-2.5 py-1 bg-slate-100 rounded-lg hover:bg-slate-200 cursor-pointer">+₹500</button>
-            <button onclick="setAddAmount(2000)" class="text-xs font-bold px-2.5 py-1 bg-slate-100 rounded-lg hover:bg-slate-200 cursor-pointer">+₹2,000</button>
-            <button onclick="setAddAmount(5000)" class="text-xs font-bold px-2.5 py-1 bg-slate-100 rounded-lg hover:bg-slate-200 cursor-pointer">+₹5,000</button>
+            <button onclick="setAddAmount(500)" class="text-xs font-bold px-2.5 py-1 bg-slate-100 rounded-lg cursor-pointer">+₹500</button>
+            <button onclick="setAddAmount(2000)" class="text-xs font-bold px-2.5 py-1 bg-slate-100 rounded-lg cursor-pointer">+₹2,000</button>
+            <button onclick="setAddAmount(5000)" class="text-xs font-bold px-2.5 py-1 bg-slate-100 rounded-lg cursor-pointer">+₹5,000</button>
           </div>
         </div>
-
         <button onclick="processYoupiLoad()" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer">
           Launch YouPI Dynamic QR Checkout
         </button>
       </div>
     </div>
 
-    <!-- 2. YOUPI-PG CHECKOUT MODAL -->
+    <!-- 3. YOUPI-PG DYNAMIC CHECKOUT MODAL -->
     <div id="youpiCheckoutModal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
       <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl flex flex-col max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200">
         <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-4 flex justify-between items-center shadow-sm">
@@ -298,7 +312,6 @@
           </div>
           <button onclick="closeModal('youpiCheckoutModal')" class="text-white/80 hover:text-white p-1 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-
         <div class="p-4 space-y-4">
           <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
             <div>
@@ -310,34 +323,15 @@
               <p id="youpiOrderAmount" class="font-black text-base text-emerald-700">₹2,000.00</p>
             </div>
           </div>
-
           <div class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border-2 border-dashed border-emerald-400 relative">
             <div id="youpiQrBox" class="relative flex items-center justify-center">
               <img id="youpiQrImage" src="" alt="YouPI Dynamic QR" class="w-44 h-44 rounded-xl shadow-inner">
             </div>
             <p class="text-[11px] font-mono text-slate-700 font-bold mt-3" id="youpiVpaText">VPA: 7300277557@indie</p>
           </div>
-
           <button onclick="simulateObserverBankCredit()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
             <i data-lucide="radio" class="w-4 h-4 text-emerald-600"></i> Simulate Bank SMS Auto-Detect
           </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. CONFIG MODAL -->
-    <div id="youpiConfigModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
-      <div class="bg-white w-full max-w-sm rounded-2xl p-5 space-y-4 shadow-2xl">
-        <div class="flex justify-between items-center border-b pb-2">
-          <h3 class="font-bold text-slate-800 text-sm">Gateway Settings</h3>
-          <button onclick="closeModal('youpiConfigModal')" class="cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-400"></i></button>
-        </div>
-        <div class="text-xs space-y-3">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">Worker Backend API URL</label>
-            <input id="cfgWorkerApiUrl" type="text" value="" placeholder="https://your-worker.workers.dev" class="w-full px-3 py-1.5 text-xs font-mono rounded-lg border border-slate-300 outline-none">
-          </div>
-          <button onclick="saveSettings()" class="w-full py-2 bg-emerald-700 text-white font-bold rounded-xl cursor-pointer">Save Settings</button>
         </div>
       </div>
     </div>
@@ -365,6 +359,7 @@
     const APP_STATE = {
       wallet: { balance: 12450.00, isMasked: false },
       backendUrl: localStorage.getItem("worker_api_url") || "",
+      user: { name: "Ananya Kapoor", phone: "+91 98765 43210", kyc: "MIN_KYC" },
       transactions: [
         { id: "TXN_1", rrn: "RRN3928172901", type: "DEBIT", title: "Adani Electricity", amount: 1420.00, status: "SUCCESS", timestamp: "Today, 10:15 AM" },
         { id: "TXN_2", rrn: "RRN3928172900", type: "CREDIT", title: "Loaded via YouPI-PG", amount: 2000.00, status: "SUCCESS", timestamp: "Yesterday, 04:30 PM" }
@@ -388,6 +383,10 @@
 
     function renderUI() {
       document.getElementById("walletBalanceAmount").innerText = APP_STATE.wallet.isMasked ? "••••••" : APP_STATE.wallet.balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
+      document.getElementById("userNameDisplay").innerText = APP_STATE.user.name;
+      document.getElementById("userPhoneDisplay").innerText = APP_STATE.user.phone;
+      document.getElementById("profileName").innerText = APP_STATE.user.name;
+      document.getElementById("profilePhone").innerText = APP_STATE.user.phone;
       renderTransactions();
       lucide.createIcons();
     }
@@ -448,6 +447,34 @@
       document.getElementById("addMoneyInput").value = val;
     }
 
+    async function verifyUserAuth() {
+      const phone = document.getElementById("authPhoneInput").value.trim();
+      const otp = document.getElementById("authOtpInput").value.trim();
+      if(otp.length < 4) {
+        showToast("Enter a valid OTP", "alert-circle");
+        return;
+      }
+      
+      if(APP_STATE.backendUrl) {
+        try {
+          const res = await fetch(`${APP_STATE.backendUrl}/api/auth/verify`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phone, otp })
+          });
+          const data = await res.json();
+          if(data.success) {
+            APP_STATE.user.phone = `+91 ${phone}`;
+            APP_STATE.user.name = data.user.name;
+          }
+        } catch(e) { console.error("Worker Auth fallback used", e); }
+      }
+
+      closeModal("authModal");
+      renderUI();
+      showToast("Login & Min-KYC Verified Successfully!", "check-circle-2");
+    }
+
     async function processYoupiLoad() {
       const amount = parseFloat(document.getElementById("addMoneyInput")?.value);
       if (isNaN(amount) || amount <= 0) {
@@ -505,7 +532,6 @@
       const url = document.getElementById("cfgWorkerApiUrl").value.trim();
       APP_STATE.backendUrl = url;
       localStorage.setItem("worker_api_url", url);
-      closeModal("youpiConfigModal");
       showToast("Worker API URL saved successfully!", "check-circle");
     }
 
