@@ -38,19 +38,19 @@
     <div class="bg-[#002970] text-white px-4 pb-3.5 pt-1 flex justify-between items-center shadow-md z-20 border-b border-blue-900/60 shrink-0">
       <div class="flex items-center gap-2.5">
         <button onclick="switchTab('profile')" class="relative flex items-center justify-center w-10 h-10 rounded-full bg-blue-900 border-2 border-cyan-400 font-bold text-sm tracking-wide text-white uppercase focus:outline-none cursor-pointer">
-          <span id="userAvatarText">AK</span>
+          <span id="userAvatarText">--</span>
           <span id="headerKycBadge" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-amber-400 border-2 border-[#002970]"></span>
         </button>
         <div>
           <div class="flex items-center gap-1.5">
-            <h2 id="userNameDisplay" class="font-semibold text-sm leading-tight">Ananya Kapoor</h2>
+            <h2 id="userNameDisplay" class="font-semibold text-sm leading-tight">Please Login</h2>
             <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-300"></i>
           </div>
-          <p id="userPhoneDisplay" class="text-[11px] text-cyan-200 font-mono">+91 98765 43210</p>
+          <p id="userPhoneDisplay" class="text-[11px] text-cyan-200 font-mono">Tap Login to Verify</p>
         </div>
       </div>
       <div class="flex items-center gap-1.5">
-        <button onclick="openModal('authModal')" class="px-2.5 py-1 rounded-lg bg-[#00b9f5] hover:bg-[#00a3db] text-slate-900 font-bold text-[11px] transition cursor-pointer">
+        <button id="authHeaderBtn" onclick="openModal('authModal')" class="px-2.5 py-1 rounded-lg bg-[#00b9f5] hover:bg-[#00a3db] text-slate-900 font-bold text-[11px] transition cursor-pointer">
           Login / Verify
         </button>
       </div>
@@ -85,33 +85,57 @@
           </div>
         </div>
 
-        <!-- Balance & Wallet Card -->
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 relative overflow-hidden">
-          <div class="flex justify-between items-start mb-2">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="text-[11px] tracking-wider text-slate-500 font-bold uppercase">CreditPay Wallet Balance</span>
-                <button onclick="toggleBalanceMask()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
-                  <i id="balanceEyeIcon" data-lucide="eye" class="w-3.5 h-3.5"></i>
-                </button>
-              </div>
-              <div class="text-2xl font-black text-slate-900 tracking-tight mt-0.5 flex items-baseline gap-1">
-                <span class="font-sans text-xl text-[#002970]">₹</span>
-                <span id="walletBalanceAmount">12,450.00</span>
-              </div>
+        <!-- DYNAMIC CONTAINER: WALLET (IF LOGGED IN) OR CASHBACK POSTER (IF GUEST) -->
+        <div id="dynamicWalletOrPoster">
+          <!-- Poster shown before login -->
+          <div id="promoPoster" class="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 rounded-2xl p-4 text-white shadow-lg border border-cyan-500/30 relative overflow-hidden">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-cyan-400/20 rounded-full blur-xl"></div>
+            <div class="flex justify-between items-start mb-1">
+              <span class="bg-cyan-400 text-slate-950 text-[10px] font-black uppercase px-2 py-0.5 rounded-full tracking-wider">
+                LIMITED OFFER
+              </span>
+              <span class="text-[10px] text-cyan-200 font-mono font-bold">100% REFUND</span>
             </div>
-            <span id="kycStatusBadge" class="text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Min KYC Verified
-            </span>
+            <h3 class="text-base font-black tracking-tight mt-1 text-white">Load Money via Credit Card</h3>
+            <p class="text-xs text-cyan-100 font-medium mt-0.5">
+              Get <span class="text-cyan-300 font-black">100% Fees Cashback</span> instantly into your CreditPay digital wallet ledger!
+            </p>
+            <div class="mt-3.5 flex items-center justify-between pt-2.5 border-t border-white/15">
+              <span class="text-[10px] text-slate-300 font-mono">Login required to claim</span>
+              <button onclick="openModal('authModal')" class="bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs px-3 py-1.5 rounded-xl shadow transition cursor-pointer flex items-center gap-1">
+                Login Now <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
-            <button onclick="openModal('addMoneyModal')" class="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-sm cursor-pointer">
-              <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Money
-            </button>
-            <button onclick="switchTab('bills')" class="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-[#002970] font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition cursor-pointer">
-              <i data-lucide="receipt" class="w-4 h-4"></i> Pay Utility
-            </button>
+          <!-- Wallet Card shown after login (Hidden by default) -->
+          <div id="walletCard" class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-200 relative overflow-hidden">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] tracking-wider text-slate-500 font-bold uppercase">CreditPay Wallet Balance</span>
+                  <button onclick="toggleBalanceMask()" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                    <i id="balanceEyeIcon" data-lucide="eye" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+                <div class="text-2xl font-black text-slate-900 tracking-tight mt-0.5 flex items-baseline gap-1">
+                  <span class="font-sans text-xl text-[#002970]">₹</span>
+                  <span id="walletBalanceAmount">0.00</span>
+                </div>
+              </div>
+              <span id="kycStatusBadge" class="text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Min KYC Verified
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+              <button onclick="openModal('addMoneyModal')" class="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition shadow-sm cursor-pointer">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Money
+              </button>
+              <button onclick="switchTab('bills')" class="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-[#002970] font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition cursor-pointer">
+                <i data-lucide="receipt" class="w-4 h-4"></i> Pay Utility
+              </button>
+            </div>
           </div>
         </div>
 
@@ -152,7 +176,9 @@
             <h3 class="font-bold text-xs text-slate-500 uppercase tracking-wider">Passbook & History</h3>
             <button onclick="switchTab('history')" class="text-xs font-bold text-[#00b9f5] hover:text-[#002970] cursor-pointer">View Passbook →</button>
           </div>
-          <div id="recentTxList" class="space-y-3"></div>
+          <div id="recentTxList" class="space-y-3">
+            <p class="text-xs text-slate-400 text-center py-2">No transactions yet. Please login and add money.</p>
+          </div>
         </div>
       </section>
 
@@ -198,18 +224,25 @@
             <i data-lucide="download" class="w-3.5 h-3.5"></i> PDF Passbook
           </button>
         </div>
-        <div id="fullTxList" class="space-y-2.5"></div>
+        <div id="fullTxList" class="space-y-2.5">
+          <p class="text-xs text-slate-400 text-center py-4">No records found.</p>
+        </div>
       </section>
 
       <!-- ================= SCREEN 4: PROFILE TAB ================= -->
       <section id="tab-profile" class="tab-content p-3.5 space-y-3.5">
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex items-center gap-3">
-          <div class="w-14 h-14 rounded-full bg-[#002970] border-2 border-emerald-400 flex items-center justify-center font-black text-lg text-white">AK</div>
-          <div>
-            <h3 id="profileName" class="font-bold text-slate-900 text-sm">Ananya Kapoor</h3>
-            <p id="profilePhone" class="text-xs text-slate-500 font-mono">+91 98765 43210</p>
-            <span class="inline-block mt-1 text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">Min-KYC Active (₹10,000 monthly cap)</span>
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-full bg-[#002970] border-2 border-emerald-400 flex items-center justify-center font-black text-lg text-white" id="profileAvatar">--</div>
+            <div>
+              <h3 id="profileName" class="font-bold text-slate-900 text-sm">Guest User</h3>
+              <p id="profilePhone" class="text-xs text-slate-500 font-mono">Not Logged In</p>
+              <span id="profileKycBadge" class="inline-block mt-1 text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded">Unverified</span>
+            </div>
           </div>
+          <button id="profileLogoutBtn" onclick="handleLogout()" class="hidden px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs rounded-xl transition cursor-pointer">
+            Logout
+          </button>
         </div>
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
           <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">YouPI-PG Gateway Settings</h4>
@@ -260,11 +293,11 @@
         <div class="space-y-3 text-xs">
           <div>
             <label class="block font-bold text-slate-700 mb-1">Mobile Number</label>
-            <input id="authPhoneInput" type="tel" value="9876543210" class="w-full px-3 py-2 font-mono border rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
+            <input id="authPhoneInput" type="tel" placeholder="Enter 10-digit mobile" class="w-full px-3 py-2 font-mono border rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
           <div>
             <label class="block font-bold text-slate-700 mb-1">OTP Code</label>
-            <input id="authOtpInput" type="text" value="123456" class="w-full px-3 py-2 font-mono border rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
+            <input id="authOtpInput" type="text" placeholder="Enter OTP (e.g., 1234)" class="w-full px-3 py-2 font-mono border rounded-xl outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
           <button onclick="verifyUserAuth()" class="w-full py-2.5 bg-[#002970] text-white font-bold rounded-xl cursor-pointer shadow">Verify & Login</button>
         </div>
@@ -282,7 +315,7 @@
           <label class="block text-xs font-bold text-slate-600 mb-1">Enter Amount to Add</label>
           <div class="relative">
             <span class="absolute left-3 top-2.5 font-black text-slate-500">₹</span>
-            <input id="addMoneyInput" type="number" value="2000" min="10" max="100000" class="w-full pl-8 pr-3 py-2 text-lg font-black rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none">
+            <input id="addMoneyInput" type="number" value="1000" min="10" max="100000" class="w-full pl-8 pr-3 py-2 text-lg font-black rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none">
           </div>
           <div class="flex gap-2 mt-2">
             <button onclick="setAddAmount(500)" class="text-xs font-bold px-2.5 py-1 bg-slate-100 rounded-lg cursor-pointer">+₹500</button>
@@ -320,7 +353,7 @@
             </div>
             <div class="text-right">
               <p class="text-slate-500 text-[10px]">Amount Payable</p>
-              <p id="youpiOrderAmount" class="font-black text-base text-emerald-700">₹2,000.00</p>
+              <p id="youpiOrderAmount" class="font-black text-base text-emerald-700">₹1,000.00</p>
             </div>
           </div>
           <div class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border-2 border-dashed border-emerald-400 relative">
@@ -341,8 +374,8 @@
       <div class="bg-white w-full max-w-xs rounded-2xl p-5 text-center space-y-3 shadow-2xl">
         <div class="flex justify-between items-center"><span class="text-xs font-bold text-[#002970]">My CreditPay QR</span><button onclick="closeModal('qrModal')" class="cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-400"></i></button></div>
         <div class="p-4 bg-slate-50 border-2 border-dashed border-emerald-400 rounded-xl flex flex-col items-center justify-center">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=7300277557@indie&pn=Ananya%20Kapoor&cu=INR" alt="QR" class="w-40 h-40 rounded-lg shadow-sm">
-          <p class="font-mono text-xs font-bold text-[#002970] mt-2">7300277557@indie</p>
+          <img id="myQrImage" src="" alt="QR" class="w-40 h-40 rounded-lg shadow-sm">
+          <p class="font-mono text-xs font-bold text-[#002970] mt-2" id="myQrVpaText">Login to view VPA</p>
         </div>
       </div>
     </div>
@@ -357,13 +390,10 @@
 
   <script>
     const APP_STATE = {
-      wallet: { balance: 12450.00, isMasked: false },
+      wallet: { balance: 0.00, isMasked: false },
       backendUrl: localStorage.getItem("worker_api_url") || "",
-      user: { name: "Ananya Kapoor", phone: "+91 98765 43210", kyc: "MIN_KYC" },
-      transactions: [
-        { id: "TXN_1", rrn: "RRN3928172901", type: "DEBIT", title: "Adani Electricity", amount: 1420.00, status: "SUCCESS", timestamp: "Today, 10:15 AM" },
-        { id: "TXN_2", rrn: "RRN3928172900", type: "CREDIT", title: "Loaded via YouPI-PG", amount: 2000.00, status: "SUCCESS", timestamp: "Yesterday, 04:30 PM" }
-      ]
+      user: { name: "", phone: "", kyc: "UNVERIFIED", loggedIn: false },
+      transactions: []
     };
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -383,10 +413,60 @@
 
     function renderUI() {
       document.getElementById("walletBalanceAmount").innerText = APP_STATE.wallet.isMasked ? "••••••" : APP_STATE.wallet.balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
-      document.getElementById("userNameDisplay").innerText = APP_STATE.user.name;
-      document.getElementById("userPhoneDisplay").innerText = APP_STATE.user.phone;
-      document.getElementById("profileName").innerText = APP_STATE.user.name;
-      document.getElementById("profilePhone").innerText = APP_STATE.user.phone;
+      
+      const badge = document.getElementById("kycStatusBadge");
+      const profileBadge = document.getElementById("profileKycBadge");
+      const promoPoster = document.getElementById("promoPoster");
+      const walletCard = document.getElementById("walletCard");
+      const authHeaderBtn = document.getElementById("authHeaderBtn");
+      const profileLogoutBtn = document.getElementById("profileLogoutBtn");
+
+      if (APP_STATE.user.loggedIn) {
+        promoPoster.classList.add("hidden");
+        walletCard.classList.remove("hidden");
+        authHeaderBtn.classList.add("hidden");
+        profileLogoutBtn.classList.remove("hidden");
+
+        const initials = APP_STATE.user.name.split(" ").map(n => n[0]).join("").toUpperCase();
+        document.getElementById("userAvatarText").innerText = initials || "U";
+        document.getElementById("profileAvatar").innerText = initials || "U";
+        document.getElementById("userNameDisplay").innerText = APP_STATE.user.name;
+        document.getElementById("userPhoneDisplay").innerText = APP_STATE.user.phone;
+        document.getElementById("profileName").innerText = APP_STATE.user.name;
+        document.getElementById("profilePhone").innerText = APP_STATE.user.phone;
+        
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Min KYC Verified`;
+        badge.className = "text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1";
+        
+        profileBadge.innerText = "Min-KYC Active (₹10,000 monthly cap)";
+        profileBadge.className = "inline-block mt-1 text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded";
+
+        const userVpa = `${APP_STATE.user.phone.replace(/[^0-9]/g, '').slice(-5)}@indie`;
+        document.getElementById("myQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=${userVpa}&pn=${encodeURIComponent(APP_STATE.user.name)}&cu=INR`;
+        document.getElementById("myQrVpaText").innerText = userVpa;
+      } else {
+        promoPoster.classList.remove("hidden");
+        walletCard.classList.add("hidden");
+        authHeaderBtn.classList.remove("hidden");
+        profileLogoutBtn.classList.add("hidden");
+
+        document.getElementById("userAvatarText").innerText = "--";
+        document.getElementById("profileAvatar").innerText = "--";
+        document.getElementById("userNameDisplay").innerText = "Please Login";
+        document.getElementById("userPhoneDisplay").innerText = "Tap Login to Verify";
+        document.getElementById("profileName").innerText = "Guest User";
+        document.getElementById("profilePhone").innerText = "Not Logged In";
+
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Unverified`;
+        badge.className = "text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1";
+        
+        profileBadge.innerText = "Unverified";
+        profileBadge.className = "inline-block mt-1 text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded";
+
+        document.getElementById("myQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=unverified@indie&pn=Guest&cu=INR`;
+        document.getElementById("myQrVpaText").innerText = "Login required";
+      }
+
       renderTransactions();
       lucide.createIcons();
     }
@@ -400,6 +480,12 @@
       const container = document.getElementById("recentTxList");
       const fullContainer = document.getElementById("fullTxList");
       if (!container) return;
+
+      if (APP_STATE.transactions.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">No transactions yet. Please login and add money.</p>`;
+        if (fullContainer) fullContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No records found.</p>`;
+        return;
+      }
 
       const html = APP_STATE.transactions.map(tx => `
         <div class="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
@@ -450,11 +536,12 @@
     async function verifyUserAuth() {
       const phone = document.getElementById("authPhoneInput").value.trim();
       const otp = document.getElementById("authOtpInput").value.trim();
-      if(otp.length < 4) {
-        showToast("Enter a valid OTP", "alert-circle");
+      if(phone.length < 10 || otp.length < 3) {
+        showToast("Enter a valid mobile number & OTP", "alert-circle");
         return;
       }
       
+      let fetchedName = "Verified User";
       if(APP_STATE.backendUrl) {
         try {
           const res = await fetch(`${APP_STATE.backendUrl}/api/auth/verify`, {
@@ -463,19 +550,40 @@
             body: JSON.stringify({ phone, otp })
           });
           const data = await res.json();
-          if(data.success) {
-            APP_STATE.user.phone = `+91 ${phone}`;
-            APP_STATE.user.name = data.user.name;
+          if(data.success && data.user) {
+            fetchedName = data.user.name;
           }
         } catch(e) { console.error("Worker Auth fallback used", e); }
       }
+
+      APP_STATE.user.loggedIn = true;
+      APP_STATE.user.phone = `+91 ${phone}`;
+      APP_STATE.user.name = fetchedName;
+      APP_STATE.user.kyc = "MIN_KYC";
 
       closeModal("authModal");
       renderUI();
       showToast("Login & Min-KYC Verified Successfully!", "check-circle-2");
     }
 
+    function handleLogout() {
+      APP_STATE.user.loggedIn = false;
+      APP_STATE.user.phone = "";
+      APP_STATE.user.name = "";
+      APP_STATE.wallet.balance = 0.00;
+      APP_STATE.transactions = [];
+      renderUI();
+      showToast("Logged out successfully", "info");
+    }
+
     async function processYoupiLoad() {
+      if (!APP_STATE.user.loggedIn) {
+        closeModal("addMoneyModal");
+        openModal("authModal");
+        showToast("Please login first to add money", "alert-circle");
+        return;
+      }
+
       const amount = parseFloat(document.getElementById("addMoneyInput")?.value);
       if (isNaN(amount) || amount <= 0) {
         showToast("Enter a valid amount", "alert-circle");
@@ -512,7 +620,7 @@
     }
 
     function simulateObserverBankCredit() {
-      const amount = parseFloat(document.getElementById("addMoneyInput")?.value) || 2000;
+      const amount = parseFloat(document.getElementById("addMoneyInput")?.value) || 1000;
       APP_STATE.wallet.balance += amount;
       APP_STATE.transactions.unshift({
         id: `TXN_${Date.now()}`,
@@ -536,8 +644,13 @@
     }
 
     function quickPayBill(title, amount) {
+      if (!APP_STATE.user.loggedIn) {
+        openModal("authModal");
+        showToast("Please login first to make payments", "alert-circle");
+        return;
+      }
       if (amount > APP_STATE.wallet.balance) {
-        showToast("Insufficient balance!", "alert-circle");
+        showToast("Insufficient balance! Please add money.", "alert-circle");
         return;
       }
       APP_STATE.wallet.balance -= amount;
