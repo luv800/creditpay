@@ -1,7 +1,7 @@
 {
   "name": "creditpay-backend",
   "version": "1.0.0",
-  "description": "CreditPay Cloudflare Worker Backend",
+  "description": "CreditPay with YouPI-PG Integration",
   "main": "worker.js",
   "scripts": {
     "dev": "wrangler dev",
