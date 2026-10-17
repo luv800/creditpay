@@ -675,6 +675,46 @@
       t.classList.remove("hidden");
       setTimeout(() => t.classList.add("hidden"), 3500);
     }
+    <!-- Include YouPI Checkout Script -->
+<script src="https://your-youpi-domain.com/checkout.js"></script>
+
+<button id="pay-btn">Pay ₹499 Now</button>
+
+<script>
+  document.getElementById('pay-btn').onclick = function (e) {
+    e.preventDefault();
+
+    // Initialize YouPI Checkout
+    const youpiCheckout = new YouPiCheckout({
+      key: "YOUR_MERCHANT_KEY", // Get this from your YouPI Admin Panel
+      amount: 499.00,            // Amount in INR
+      currency: "INR",
+      name: "Your Store Name",
+      description: "Test Product Purchase",
+      order_id: "ORDER_102938",  // Your internal database order ID
+      prefill: {
+        name: "John Doe",
+        email: "john@example.com",
+        contact: "9876543210"
+      },
+      handler: function (response) {
+        // This function triggers upon successful payment verification
+        alert("Payment Successful! UTR: " + response.utr);
+        console.log(response);
+        
+        // Redirect user to success page or verify with your backend
+        window.location.href = "/order-success?order_id=" + response.order_id;
+      },
+      closed: function() {
+        // Triggered if the user closes the modal/popup
+        alert('Payment checkout cancelled.');
+      }
+    });
+
+    youpiCheckout.open();
+  };
+</>
+
   </script>
 </body>
 </html>
