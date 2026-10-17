@@ -12,15 +12,20 @@ export default {
     }
 
     try {
+      // 1. User Login / OTP Verification Route
       if (url.pathname === "/api/auth/verify" && request.method === "POST") {
         const { phone, otp } = await request.json();
+        if (!phone || phone.length < 10) {
+          return Response.json({ success: false, error: "Invalid phone number" }, { status: 400, headers: corsHeaders });
+        }
         return Response.json({
           success: true,
-          token: "cp_jwt_mock_token_12345",
-          user: { phone, name: "Ananya Kapoor", kycStatus: "MIN_KYC" }
+          token: "cp_jwt_active_token_98765",
+          user: { phone, name: "Ananya Kapoor", kycStatus: "MIN_KYC", vpa: `${phone.slice(-5)}@indie` }
         }, { headers: corsHeaders });
       }
 
+      // 2. Fetch Wallet Balance Route
       if (url.pathname === "/api/wallet/balance" && request.method === "GET") {
         return Response.json({
           success: true,
@@ -29,20 +34,28 @@ export default {
         }, { headers: corsHeaders });
       }
 
+      // 3. YouPI-PG Add Money Checkout Generation Route
       if (url.pathname === "/api/wallet/add-money" && request.method === "POST") {
         const { amount } = await request.json();
+        const numericAmount = parseFloat(amount);
+        if (isNaN(numericAmount) || numericAmount <= 0) {
+          return Response.json({ success: false, error: "Invalid amount specified" }, { status: 400, headers: corsHeaders });
+        }
+
         const orderId = `YOUPI-${Math.floor(100000 + Math.random() * 900000)}`;
-        const upiPayload = `upi://pay?pa=7300277557@indie&pn=IndusInd&am=${Number(amount).toFixed(2)}&cu=INR&tr=${orderId}`;
+        const merchantVpa = "7300277557@indie";
+        const upiPayload = `upi://pay?pa=${encodeURIComponent(merchantVpa)}&pn=IndusInd%20Indie&am=${numericAmount.toFixed(2)}&cu=INR&tr=${orderId}`;
 
         return Response.json({
           success: true,
           orderId,
+          vpa: merchantVpa,
           upiPayload,
-          message: "FIFO slot reserved successfully"
+          message: "YouPI FIFO Slot Reserved successfully"
         }, { headers: corsHeaders });
       }
 
-      return new Response("Endpoint Not Found", { status: 404, headers: corsHeaders });
+      return new Response("API Endpoint Not Found", { status: 404, headers: corsHeaders });
 
     } catch (err) {
       return Response.json({ success: false, error: err.message }, { status: 500, headers: corsHeaders });
