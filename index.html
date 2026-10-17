@@ -63,22 +63,22 @@
       <section id="tab-home" class="tab-content active p-3.5 space-y-3.5">
         
         <!-- YOUPI-PG PROMOTION BANNER -->
-        <div onclick="openModal('addMoneyModal')" class="cursor-pointer bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-700 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden group border border-emerald-400/30">
+        <div onclick="openModal('addMoneyModal')" class="cursor-pointer bg-gradient-to-r from-blue-800 via-indigo-900 to-slate-900 rounded-2xl p-4 text-white shadow-lg relative overflow-hidden group border border-blue-400/30">
           <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-white/10 rounded-full blur-xl group-hover:scale-125 transition-transform duration-500"></div>
           <div class="flex justify-between items-start">
-            <span class="bg-emerald-400 text-slate-950 text-[10px] font-black uppercase px-2 py-0.5 rounded-full tracking-wider shadow-sm flex items-center gap-1">
-              <i data-lucide="zap" class="w-3 h-3 fill-current"></i> INDIE A/C 7300277557
+            <span class="bg-[#00b9f5] text-slate-950 text-[10px] font-black uppercase px-2 py-0.5 rounded-full tracking-wider shadow-sm flex items-center gap-1">
+              <i data-lucide="zap" class="w-3 h-3 fill-current"></i> LOVE KUMAR LALAWAT
             </span>
-            <span class="text-[10px] text-emerald-200 font-medium">0% Fee Gateway</span>
+            <span class="text-[10px] text-cyan-200 font-medium">Paytm QR Gateway</span>
           </div>
           <div class="mt-2.5">
-            <h3 class="text-base font-extrabold leading-tight">YouPI-PG Direct to IndusInd Bank</h3>
-            <p class="text-xs text-emerald-100 font-semibold mt-0.5">
-              All collections route instantly to <span class="text-emerald-300 font-black">7300277557@indie</span> with automated telemetry.
+            <h3 class="text-base font-extrabold leading-tight">Instant Credit Card & UPI Load</h3>
+            <p class="text-xs text-blue-100 font-semibold mt-0.5">
+              Route payments securely to <span class="text-cyan-300 font-black">paytmqr5pptje@ptys</span> with automated telemetry.
             </p>
           </div>
           <div class="mt-3 flex items-center justify-between pt-2 border-t border-white/20 text-xs">
-            <span class="text-[11px] text-white/90 font-medium">FIFO Slot Active</span>
+            <span class="text-[11px] text-white/90 font-medium">0% Fee Cashback Active</span>
             <span class="font-bold flex items-center gap-1 text-white bg-white/20 px-2.5 py-1 rounded-lg">
               Add Money <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </span>
@@ -245,7 +245,11 @@
           </button>
         </div>
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 space-y-3">
-          <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">YouPI-PG Gateway Settings</h4>
+          <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Paytm QR Gateway Settings</h4>
+          <div class="p-2.5 bg-blue-50 text-blue-900 rounded-xl border border-blue-200 font-mono text-[11px]">
+            <p class="font-bold font-sans">Merchant: LOVE KUMAR LALAWAT</p>
+            <p>VPA: paytmqr5pptje@ptys</p>
+          </div>
           <div>
             <label class="block text-[11px] font-bold text-slate-700 mb-1">Worker Backend API URL</label>
             <input id="cfgWorkerApiUrl" type="text" placeholder="https://your-worker.workers.dev" class="w-full px-3 py-1.5 text-xs font-mono rounded-lg border border-slate-300 outline-none">
@@ -308,7 +312,7 @@
     <div id="addMoneyModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div class="bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center border-b pb-2">
-          <span class="font-bold text-[#002970] text-sm">Add Money via YouPI-PG</span>
+          <span class="font-bold text-[#002970] text-sm">Add Money via Paytm QR (Love Kumar Lalawat)</span>
           <button onclick="closeModal('addMoneyModal')" class="cursor-pointer text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <div>
@@ -324,23 +328,23 @@
           </div>
         </div>
         <button onclick="processYoupiLoad()" class="w-full py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl shadow-md transition cursor-pointer">
-          Launch YouPI Dynamic QR Checkout
+          Launch Paytm Dynamic QR Checkout
         </button>
       </div>
     </div>
 
-    <!-- 3. YOUPI-PG DYNAMIC CHECKOUT MODAL -->
+    <!-- 3. PAYTM QR CHECKOUT MODAL -->
     <div id="youpiCheckoutModal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm">
       <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl flex flex-col max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200">
-        <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white p-4 flex justify-between items-center shadow-sm">
+        <div class="bg-gradient-to-r from-blue-700 via-sky-600 to-blue-900 text-white p-4 flex justify-between items-center shadow-sm">
           <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-white text-emerald-800 flex items-center justify-center font-black text-sm shadow">Y!</div>
+            <div class="w-9 h-9 rounded-xl bg-white text-blue-700 flex items-center justify-center font-black text-xs shadow">Paytm</div>
             <div>
               <div class="flex items-center gap-1.5">
-                <h3 class="font-extrabold text-sm leading-tight">YouPI Payment Gateway</h3>
-                <span class="text-[9px] font-bold bg-emerald-400 text-emerald-950 px-1.5 py-0.2 rounded font-mono">0% FEE</span>
+                <h3 class="font-extrabold text-sm leading-tight">Love Kumar Lalawat</h3>
+                <span class="text-[9px] font-bold bg-amber-300 text-slate-950 px-1.5 py-0.2 rounded font-mono">100% CASHBACK</span>
               </div>
-              <p class="text-[10px] text-emerald-200">IndusInd Bank (INDIE) Settlement</p>
+              <p class="text-[10px] text-cyan-200">Paytm UPI: paytmqr5pptje@ptys</p>
             </div>
           </div>
           <button onclick="closeModal('youpiCheckoutModal')" class="text-white/80 hover:text-white p-1 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -356,11 +360,12 @@
               <p id="youpiOrderAmount" class="font-black text-base text-emerald-700">₹1,000.00</p>
             </div>
           </div>
-          <div class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border-2 border-dashed border-emerald-400 relative">
+          <div class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border-2 border-dashed border-blue-400 relative">
             <div id="youpiQrBox" class="relative flex items-center justify-center">
-              <img id="youpiQrImage" src="" alt="YouPI Dynamic QR" class="w-44 h-44 rounded-xl shadow-inner">
+              <img id="youpiQrImage" src="" alt="Paytm Dynamic QR" class="w-44 h-44 rounded-xl shadow-inner">
             </div>
-            <p class="text-[11px] font-mono text-slate-700 font-bold mt-3" id="youpiVpaText">VPA: 7300277557@indie</p>
+            <p class="text-[11px] font-mono text-slate-700 font-bold mt-3" id="youpiVpaText">VPA: paytmqr5pptje@ptys</p>
+            <p class="text-[10px] text-slate-400">Scan with Paytm App[span_2](start_span)[span_2](end_span)</p>
           </div>
           <button onclick="simulateObserverBankCredit()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
             <i data-lucide="radio" class="w-4 h-4 text-emerald-600"></i> Simulate Bank SMS Auto-Detect
@@ -372,10 +377,10 @@
     <!-- 4. QR CODE MODAL -->
     <div id="qrModal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
       <div class="bg-white w-full max-w-xs rounded-2xl p-5 text-center space-y-3 shadow-2xl">
-        <div class="flex justify-between items-center"><span class="text-xs font-bold text-[#002970]">My CreditPay QR</span><button onclick="closeModal('qrModal')" class="cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-400"></i></button></div>
-        <div class="p-4 bg-slate-50 border-2 border-dashed border-emerald-400 rounded-xl flex flex-col items-center justify-center">
+        <div class="flex justify-between items-center"><span class="text-xs font-bold text-[#002970]">Love Kumar Lalawat QR</span><button onclick="closeModal('qrModal')" class="cursor-pointer"><i data-lucide="x" class="w-5 h-5 text-slate-400"></i></button></div>
+        <div class="p-4 bg-slate-50 border-2 border-dashed border-blue-400 rounded-xl flex flex-col items-center justify-center">
           <img id="myQrImage" src="" alt="QR" class="w-40 h-40 rounded-lg shadow-sm">
-          <p class="font-mono text-xs font-bold text-[#002970] mt-2" id="myQrVpaText">Login to view VPA</p>
+          <p class="font-mono text-xs font-bold text-[#002970] mt-2">paytmqr5pptje@ptys</p>
         </div>
       </div>
     </div>
@@ -441,9 +446,7 @@
         profileBadge.innerText = "Min-KYC Active (₹10,000 monthly cap)";
         profileBadge.className = "inline-block mt-1 text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded";
 
-        const userVpa = `${APP_STATE.user.phone.replace(/[^0-9]/g, '').slice(-5)}@indie`;
-        document.getElementById("myQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=${userVpa}&pn=${encodeURIComponent(APP_STATE.user.name)}&cu=INR`;
-        document.getElementById("myQrVpaText").innerText = userVpa;
+        document.getElementById("myQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=paytmqr5pptje@ptys&pn=LOVE%20KUMAR%20LALAWAT&cu=INR`;
       } else {
         promoPoster.classList.remove("hidden");
         walletCard.classList.add("hidden");
@@ -463,8 +466,7 @@
         profileBadge.innerText = "Unverified";
         profileBadge.className = "inline-block mt-1 text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded";
 
-        document.getElementById("myQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=unverified@indie&pn=Guest&cu=INR`;
-        document.getElementById("myQrVpaText").innerText = "Login required";
+        document.getElementById("myQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=paytmqr5pptje@ptys&pn=LOVE%20KUMAR%20LALAWAT&cu=INR`;
       }
 
       renderTransactions();
@@ -541,7 +543,7 @@
         return;
       }
       
-      let fetchedName = "Verified User";
+      let fetchedName = "Love Kumar Lalawat";
       if(APP_STATE.backendUrl) {
         try {
           const res = await fetch(`${APP_STATE.backendUrl}/api/auth/verify`, {
@@ -591,32 +593,16 @@
       }
       closeModal("addMoneyModal");
 
-      if (APP_STATE.backendUrl) {
-        try {
-          const res = await fetch(`${APP_STATE.backendUrl}/api/wallet/add-money`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount })
-          });
-          const data = await res.json();
-          if(data.success) {
-            document.getElementById("youpiOrderId").innerText = data.orderId;
-            document.getElementById("youpiOrderAmount").innerText = `₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-            document.getElementById("youpiQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data.upiPayload)}`;
-          }
-        } catch(e) {
-          console.error("Worker fetch failed, using fallback client generator", e);
-        }
-      } else {
-        const orderId = `YOUPI-${Math.floor(100000 + Math.random() * 900000)}`;
-        const upiPayload = `upi://pay?pa=7300277557@indie&pn=IndusInd&am=${amount.toFixed(2)}&cu=INR&tr=${orderId}`;
-        document.getElementById("youpiOrderId").innerText = orderId;
-        document.getElementById("youpiOrderAmount").innerText = `₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-        document.getElementById("youpiQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiPayload)}`;
-      }
+      const orderId = `PAYTM-${Math.floor(100000 + Math.random() * 900000)}`;
+      const merchantVpa = "paytmqr5pptje@ptys";
+      const upiPayload = `upi://pay?pa=${encodeURIComponent(merchantVpa)}&pn=LOVE%20KUMAR%20LALAWAT&am=${amount.toFixed(2)}&cu=INR&tr=${orderId}`;
+
+      document.getElementById("youpiOrderId").innerText = orderId;
+      document.getElementById("youpiOrderAmount").innerText = `₹${amount.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById("youpiQrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiPayload)}`;
 
       openModal("youpiCheckoutModal");
-      showToast("YouPI FIFO Slot Reserved", "shield-check");
+      showToast("Paytm QR Code Generated (paytmqr5pptje@ptys)", "shield-check");
     }
 
     function simulateObserverBankCredit() {
@@ -626,14 +612,14 @@
         id: `TXN_${Date.now()}`,
         rrn: `42${Math.floor(1000000000 + Math.random() * 9000000000)}`,
         type: "CREDIT",
-        title: "Loaded via YouPI (7300277557@indie)",
+        title: "Loaded via Paytm (paytmqr5pptje@ptys)",
         amount: amount,
         status: "SUCCESS",
         timestamp: "Just now"
       });
       closeModal("youpiCheckoutModal");
       renderUI();
-      showToast(`Successfully added ₹${amount} to wallet!`, "check-circle-2");
+      showToast(`Successfully added ₹${amount} with 100% Cashback!`, "check-circle-2");
     }
 
     function saveSettings() {
